@@ -6,15 +6,17 @@
 int main() {
 
 	unsigned char *base = Physbase();
-	/*unsigned char *img = get_image();*/
+	unsigned char *img1 = get_image(1);
+	unsigned char *img2 = get_image(2);
+
 
 	/*unsigned int i;*/
 
-	/*fill_screen(base, 0xFF);
+	/*fill_screen(base, 0xFF);*/
 
-	/*draw_bmp(base, img, 0, 16, 640, 128);*/
+	draw_bmp(base, img2, 0, 16, 640, 128);
 
-	/*draw_ground(base, img, 200, 640, 128, 0);*/
+	/*draw_ground(base, img1, 200, 640, 128, 0);*/
 
 	/*clear_area(base, 0, 64, 640, 128);*/
 
