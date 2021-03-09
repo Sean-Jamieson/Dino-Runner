@@ -23,27 +23,27 @@ void clear_area(unsigned char *base, unsigned int x, unsigned int y, unsigned in
 	unsigned int img_y;
 
 	unsigned char start_mask = 0xFFu << end_bit;
-	unsigned char end_mask = 0xFFu >> start_bit + width % 8;
+	unsigned char end_mask = 0xFFu >> start_bit + width % 8;			// width % 8 (byte alignment???) untested
 
 	for (img_y = 0; img_y < height; img_y++) {
 		
-		if (start_bit > 0)
+		if (start_bit > 0)												//decides if beggining is byte alligned
 			*loc &= start_mask;
 		else
 			*loc = 0;
 		loc++;
 
-		for (img_x = 1; img_x < byte_width; img_x++) {
+		for (img_x = 1; img_x < byte_width; img_x++) {					//clears
 			*(loc++) = 0;
 		}
 
-		if (end_bit > 0)
+		if (end_bit > 0)												//decide if end is byte alligned
 			*loc &= end_mask;
 		else
 			*loc = 0;
 		loc++;
 
-		loc += BYTES_PER_ROW - byte_width;
+		loc += BYTES_PER_ROW - byte_width;								//move to next line
 	}
 }
 
@@ -68,15 +68,15 @@ void draw_bmp(unsigned char *base, unsigned char *img, int x, int y, unsigned in
 		byte_x = 0;
 	}
 
-	for (img_y = 0; img_y < height; img_y++) {
+	for (img_y = 0; img_y < height; img_y++) {							//x loop
 		img += cropped_x;
-		for (img_x = 0; img_x < byte_width; img_x++) {
-			*(loc++) |= *img >> start_bit;
+		for (img_x = 0; img_x < byte_width; img_x++) {					//y loop
+			*(loc++) |= *img >> start_bit;								//first half draw
 			if (end_bit > 0)
-				*loc |= *img << end_bit;
+				*loc |= *img << end_bit;								//second half draw
 			img++;
 		}
-		loc += BYTES_PER_ROW - byte_width;
+		loc += BYTES_PER_ROW - byte_width;								//move to next line
 	}
 }
 
@@ -94,22 +94,22 @@ void draw_ground(unsigned char *base, unsigned char *img, unsigned int y, unsign
 	unsigned int img_x;
 	unsigned int img_y;
 
-	for (img_y = 0; img_y < height; img_y++) {
-		for (img_x = 0; img_x < byte_offset; img_x++) {
-			if (start_bit > 0)
-				*loc |= *(img_loc - 1) << end_bit;
-			*(loc++) |= *(img_loc++) >> start_bit;
+	for (img_y = 0; img_y < height; img_y++) {							// height of ground
+		for (img_x = 0; img_x < byte_offset; img_x++) {					// draw line
+			if (start_bit > 0)											
+				*loc |= *(img_loc - 1) << end_bit;						// draw end of out of allignment byte
+			*(loc++) |= *(img_loc++) >> start_bit;						// draw beggining of out of allignment byte
 		}
-		if (start_bit > 0)
+		if (start_bit > 0)												// draw last byte
 			*loc |= *(img_loc - 1) << end_bit;
 		img_loc += byte_width - byte_offset;
 		loc += BYTES_PER_ROW - byte_offset;
 	}
 
-	loc = base + y * BYTES_PER_ROW + byte_offset;
+	loc = base + y * BYTES_PER_ROW + byte_offset;						//move to second half of ground
 	img_loc = img;
 
-	for (img_y = 0; img_y < height; img_y++) {
+	for (img_y = 0; img_y < height; img_y++) {							//same as before but for the second half of ground
 		for (img_x = 0; img_x < byte_width - byte_offset; img_x++) {
 			*(loc++) |= *img_loc >> start_bit;
 			if (start_bit > 0)
