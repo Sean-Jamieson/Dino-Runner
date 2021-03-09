@@ -33,7 +33,7 @@ void clear_area(unsigned char *base, unsigned int x, unsigned int y, unsigned in
 			*loc = 0;
 		loc++;
 
-		for (img_x = 2; img_x < byte_width; img_x++) {
+		for (img_x = 1; img_x < byte_width; img_x++) {
 			*(loc++) = 0;
 		}
 
@@ -47,10 +47,12 @@ void clear_area(unsigned char *base, unsigned int x, unsigned int y, unsigned in
 	}
 }
 
-void draw_bmp(unsigned char *base, unsigned char *img, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+void draw_bmp(unsigned char *base, unsigned char *img, int x, int y, unsigned int width, unsigned int height) {
 
-	unsigned int byte_x = x / 8;
-	unsigned int byte_width = width / 8;
+	unsigned int cropped_x = 0;
+
+	int byte_x = x / 8;
+	int byte_width = width / 8;
 
 	unsigned int start_bit = x % 8;
 	unsigned int end_bit = 8 - start_bit;
@@ -60,7 +62,14 @@ void draw_bmp(unsigned char *base, unsigned char *img, unsigned int x, unsigned 
 	unsigned int img_x;
 	unsigned int img_y;
 
+	if (x < 0) {
+		byte_width += byte_x;
+		cropped_x = -byte_x;
+		byte_x = 0;
+	}
+
 	for (img_y = 0; img_y < height; img_y++) {
+		img += cropped_x;
 		for (img_x = 0; img_x < byte_width; img_x++) {
 			*(loc++) |= *img >> start_bit;
 			if (end_bit > 0)

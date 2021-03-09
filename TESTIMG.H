@@ -1,1 +1,1 @@
-unsigned char* get_image();
+extern unsigned char img[1024];
