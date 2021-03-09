@@ -1,7 +1,9 @@
+#include "MODEL.H"
 
 struct Dino{
     unsigned int x, y;
-    int delta_y;  
+    float delta_y;  
+    float direction;
 };
 
 struct Ptero{
