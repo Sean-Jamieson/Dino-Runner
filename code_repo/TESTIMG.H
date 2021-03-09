@@ -1,1 +1,0 @@
-unsigned char* get_image();
