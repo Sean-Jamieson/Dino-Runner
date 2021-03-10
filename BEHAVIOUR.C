@@ -1,23 +1,39 @@
 #include "MODEL.H"
 #include "BEHAVIOUR.H"
 
-move_dino(struct Dino *dino){
+void set_dino_pos(struct Dino *dino, x, y){
+    dino->x = x;
+    dino->y = y;
+}
+
+void move_dino(struct Dino *dino){
     dino->y += dino->delta_y*dino->direction;
 }
 
-move_ptero(struct Ptero *ptero){
+
+
+void set_ptero_pos(struct Ptero *ptero, x, y){
+    ptero->x = x;
+    ptero->y = y;
+}
+
+void move_ptero(struct Ptero *ptero){
     ptero->x += ptero->delta_x;
 }
 
-move_cactus(struct Cactus *cactus){
+void set_cactus_pos(struct Cactus cactus, x, y){
+    cactus->x = x;
+    cactus->y = y;
+}
+void move_cactus(struct Cactus *cactus){
     cactus->x += cactus->delta_x;
 }
 
-move_ground(struct Ground *ground){
+void move_ground(struct Ground *ground){
     ground->x += ground->delta_x;
 }
 
-move_background(struct Background *background){
+void move_background(struct Background *background){
     background->x += background->delta_x;
 }
 

@@ -1,4 +1,3 @@
-#include "MODEL.H"
 
 struct Dino{
     unsigned int x, y;
