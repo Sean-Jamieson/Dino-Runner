@@ -22,6 +22,7 @@ struct Ground{
 
 struct Background{
     unsigned int x, y;
+    int delta_x;
 };
 
 struct Counter{
