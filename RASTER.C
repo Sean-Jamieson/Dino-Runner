@@ -1,82 +1,126 @@
+#include <stdio.h>
 #include "RASTER.H"
 #include "BOOLEAN.H"
 
-void fill_screen(unsigned char *base, unsigned char pattern) {
+void fill_screen(unsigned long *base, unsigned long pattern) {
 
 	unsigned int i = 0;
-	unsigned char *loc = base;
+	unsigned long *loc = base;
 
-	while (i++ < BYTES_PER_SCREEN)
+	while (i++ < LONGS_PER_SCREEN)
 		*(loc++) = pattern;
+
 }
 
-void clear_area(unsigned char *base, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
+void clear_area(unsigned long *base, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 
-	unsigned int byte_x = x / 8;
-	unsigned int byte_width = width / 8;
+	unsigned int long_x = x / 32;
+	unsigned int long_width = width / 32;
 
-	unsigned char *loc = base + y * BYTES_PER_ROW + byte_x;
-	unsigned char start_bit = x % 8;
-	unsigned char end_bit = 8 - start_bit;
+	unsigned long *loc = base + y * LONGS_PER_ROW + long_x;
+	unsigned char start_bit = x % 32;
+	unsigned char end_bit = 32 - start_bit;
 
 	unsigned int img_x;
 	unsigned int img_y;
 
-	unsigned char start_mask = 0xFFu << end_bit;
-	unsigned char end_mask = 0xFFu >> start_bit + width % 8;			// width % 8 (byte alignment???) untested
+	unsigned long start_mask = 0xFFFFFFFFu << end_bit;
+	unsigned long end_mask = 0xFFFFFFFFu >> start_bit + width % 32;		/* width % 32 (byte alignment???) untested */
 
 	for (img_y = 0; img_y < height; img_y++) {
 		
-		if (start_bit > 0)												//decides if beggining is byte alligned
+		if (start_bit > 0)												/* decides if beginning is long aligned */
 			*loc &= start_mask;
 		else
 			*loc = 0;
 		loc++;
 
-		for (img_x = 1; img_x < byte_width; img_x++) {					//clears
+		for (img_x = 1; img_x < long_width; img_x++)					/* clear row */
 			*(loc++) = 0;
-		}
 
-		if (end_bit > 0)												//decide if end is byte alligned
+		if (end_bit > 0)												/* decide if end is long aligned */
 			*loc &= end_mask;
 		else
 			*loc = 0;
 		loc++;
 
-		loc += BYTES_PER_ROW - byte_width;								//move to next line
+		loc += LONGS_PER_ROW - long_width;								/* move to next line */
 	}
 }
 
-void draw_bmp(unsigned char *base, unsigned char *img, int x, int y, unsigned int width, unsigned int height) {
+void draw_bmp(unsigned char *base, unsigned char *img, signed int x, signed int y, unsigned int width, unsigned int height) {
 
-	unsigned int cropped_x = 0;
+	unsigned int cropped_up = 0;
+	unsigned int cropped_down = 0;
+	unsigned int cropped_left = 0;
+	unsigned int cropped_right = 0;
 
-	int byte_x = x / 8;
-	int byte_width = width / 8;
+	signed int byte_x = x / 8;
+	unsigned int byte_width = width / 8;
 
-	unsigned int start_bit = x % 8;
-	unsigned int end_bit = 8 - start_bit;
+	unsigned int start_bit;
+	unsigned int end_bit;
 
-	unsigned char *loc = base + y * BYTES_PER_ROW + byte_x;
+	unsigned char *loc;
 
 	unsigned int img_x;
 	unsigned int img_y;
 
-	if (x < 0) {
-		byte_width += byte_x;
-		cropped_x = -byte_x;
-		byte_x = 0;
+	if (y > NUM_OF_ROWS)
+		return;
+
+	if (y + height < 0)
+		return;
+
+	if (byte_x > BYTES_PER_ROW)
+		return;
+
+	if (byte_x + byte_width < 0)
+		return;
+
+	if (y < 0) {
+		cropped_up = -y;
+		y = 0;
+		img += cropped_up * BYTES_PER_ROW;
 	}
 
-	for (img_y = 0; img_y < height; img_y++) {							//x loop
-		img += cropped_x;
-		for (img_x = 0; img_x < byte_width; img_x++) {					//y loop
-			*(loc++) |= *img >> start_bit;								//first half draw
+	if (y + height > NUM_OF_ROWS) {
+		cropped_down = y + height - NUM_OF_ROWS;
+	}
+
+	if (x < 0) {
+		cropped_left = -byte_x;
+		byte_x = 0;
+		byte_width -= cropped_left;
+		x = -x;
+	}
+
+	if (byte_x + byte_width > BYTES_PER_ROW)
+		cropped_right = byte_x + byte_width - BYTES_PER_ROW;
+
+	start_bit = x % 8;
+	end_bit = 8 - start_bit;
+
+	loc = base + y * BYTES_PER_ROW + byte_x;
+
+	for (img_y = cropped_up; img_y < height - cropped_down; img_y++) {	/* y loop */
+		img += cropped_left;
+		if (start_bit > 0 && cropped_left > 0)
+			*loc |= *(img - 1) << end_bit;
+		img_x = 0;
+		if (cropped_right > 0)
+			img_x = cropped_right + 1;
+		for (; img_x < byte_width; img_x++) {							/* x loop */
+			*(loc++) |= *img >> start_bit;								/* draw high order slice of the image byte */
 			if (end_bit > 0)
-				*loc |= *img << end_bit;								//second half draw
+				*loc |= *img << end_bit;								/* draw low order slice of the image byte */
 			img++;
 		}
-		loc += BYTES_PER_ROW - byte_width;								//move to next line
+		if (cropped_right > 0)
+			*(loc++) |= *(img++) >> start_bit;
+
+		loc += BYTES_PER_ROW - byte_width + cropped_right;				/* move to next line */
+		img += cropped_right;
 	}
 }
 
@@ -94,22 +138,22 @@ void draw_ground(unsigned char *base, unsigned char *img, unsigned int y, unsign
 	unsigned int img_x;
 	unsigned int img_y;
 
-	for (img_y = 0; img_y < height; img_y++) {							// height of ground
-		for (img_x = 0; img_x < byte_offset; img_x++) {					// draw line
+	for (img_y = 0; img_y < height; img_y++) {							/* height of ground */
+		for (img_x = 0; img_x < byte_offset; img_x++) {					/* draw line */
 			if (start_bit > 0)											
-				*loc |= *(img_loc - 1) << end_bit;						// draw end of out of allignment byte
-			*(loc++) |= *(img_loc++) >> start_bit;						// draw beggining of out of allignment byte
+				*loc |= *(img_loc - 1) << end_bit;						/* draw end of out of alignment byte */
+			*(loc++) |= *(img_loc++) >> start_bit;						/* draw beginning of out of alignment byte */
 		}
-		if (start_bit > 0)												// draw last byte
+		if (start_bit > 0)												/* draw last byte */
 			*loc |= *(img_loc - 1) << end_bit;
 		img_loc += byte_width - byte_offset;
 		loc += BYTES_PER_ROW - byte_offset;
 	}
 
-	loc = base + y * BYTES_PER_ROW + byte_offset;						//move to second half of ground
+	loc = base + y * BYTES_PER_ROW + byte_offset;						/* move to second half of ground */
 	img_loc = img;
 
-	for (img_y = 0; img_y < height; img_y++) {							//same as before but for the second half of ground
+	for (img_y = 0; img_y < height; img_y++) {							/* same as before but for the second half of ground */
 		for (img_x = 0; img_x < byte_width - byte_offset; img_x++) {
 			*(loc++) |= *img_loc >> start_bit;
 			if (start_bit > 0)
