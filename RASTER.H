@@ -7,5 +7,5 @@
 
 void fill_screen(unsigned long *base, unsigned long pattern);
 void clear_area(unsigned long *base, unsigned int x, unsigned int y, unsigned int width, unsigned int height);
-void draw_bmp(unsigned char *base, unsigned char *img, signed int x,signed int y, unsigned int width, unsigned int height);
-void draw_ground(unsigned char *base, unsigned char *img, unsigned int y, unsigned int width, unsigned int height, unsigned int offset);
+void draw_bmp(unsigned long *base, unsigned long *img, signed int x,signed int y, unsigned int width, unsigned int height);
+void draw_ground(unsigned long *base, unsigned long *img, unsigned int y, unsigned int width, unsigned int height, unsigned int offset);

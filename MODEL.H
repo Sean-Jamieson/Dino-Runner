@@ -1,41 +1,40 @@
 
 struct Dino{
-    unsigned int x, y;
-    float delta_y;  
-    float direction;
+	signed int x, y;
+	float y_velocity;
 };
 
 struct Ptero{
-    unsigned int x, y;
-    int delta_x;
+	signed int x, y;
+	int delta_x;
 };
 
 struct Cactus{
-    unsigned int x, y;
-    int delta_x;
+	signed int x, y;
+	int delta_x;
 };
 
 struct Ground{
-    unsigned int x, y;
-    int delta_x;
+	int y;
+	int scroll_offset;
 };
 
 struct Background{
-    unsigned int x, y;
-    int delta_x;
+	int x, y;
+	int delta_x;
 };
 
 struct Counter{
-    unsigned int x, y;
+	int x, y;
 };
 
 struct Model{
-    struct Dino *dino;
-    struct Cactus *cactus;
-    struct Ptero *ptero;
-    struct Ground *ground;
-    struct Background *background;
-    struct Counter *counter; 
+	struct Dino *dino;
+	struct Cactus *cactus;
+	struct Ptero *ptero;
+	struct Ground *ground;
+	struct Background *background;
+	struct Counter *counter; 
 };
 
 void set_dino_pos(struct Dino *dino, unsigned int x, unsigned int y);

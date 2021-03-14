@@ -1,1 +1,0 @@
-extern unsigned char img[1024];
