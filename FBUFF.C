@@ -1,15 +1,24 @@
+#include <stdio.h>
 #include <osbind.h>
 #include "FBUFF.H"
 #include "RASTER.H"
 #include "BOOLEAN.H"
 
-unsigned char buff1[BYTES_PER_SCREEN];
-unsigned char buff2[BYTES_PER_SCREEN];
-unsigned char *o_buffer;
-unsigned int o_res;
+unsigned long buff1Arr[LONGS_PER_SCREEN + 8];
+unsigned long buff2Arr[LONGS_PER_SCREEN + 8];
+unsigned long* buff1 = 0;
+unsigned long* buff2 = 0;
+unsigned long* o_buffer;	/* Original screen buffer */
+int o_res;					/* Original resolution */
 bool useBuff1 = true;
 
 void fb_init() {
+
+	buff1 = Physbase();
+
+	buff1 = (unsigned long*)(((long)(&buff1Arr) | 0xff) + 1);
+	buff2 = (unsigned long*)(((long)(&buff2Arr) | 0xff) + 1);
+
 	o_buffer = Physbase();
 	o_res = Getrez();
 	Setscreen(Logbase(), buff1, 2);
@@ -20,7 +29,7 @@ void fb_exit() {
 }
 
 void fb_flip() {
-	unsigned char *buff;
+	unsigned long *buff;
 	if (useBuff1 == true) {
 		useBuff1 = false;
 		buff = buff2;
@@ -29,10 +38,10 @@ void fb_flip() {
 		buff = buff1;
 	}
 
-	Setscreen(Logbase(), buff, 0);
+	Setscreen(Logbase(), buff, 2);
 }
 
-unsigned char* fb_get_buff() {
+unsigned long* fb_get_buff() {
 	if (useBuff1 == true)
 		return buff2;
 	else
