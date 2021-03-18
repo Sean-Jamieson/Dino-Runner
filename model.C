@@ -1,7 +1,93 @@
-#include "model.h"
 #include <stdio.h>
+#include "MODEL.H"
+#include "IMAGES.H"
 
-void set_dino_pos(struct Dino *dino, unsigned int x, unsigned int y){                                                              
+/* New behavior functions */
+void update_dino(struct Dino *dino, struct Model *model) {
+	struct Obstacle *obstacle;
+	char i;
+
+	dino->prev_x2 = dino->prev_x1;			/* Save previous position */
+	dino->prev_y2 = dino->prev_y1;
+
+	dino->prev_x1 = dino->x;
+	dino->prev_y1 = dino->y;
+
+	dino->y_velocity += DINO_ACCELERATION;	/* Apply acceleration */
+	dino->phys_y += dino->y_velocity;		/* Apply velocity */
+
+	if (dino->phys_y > DINO_GROUND_HEIGHT) {	/* Check ground collision*/
+		dino->phys_y = DINO_GROUND_HEIGHT;
+		dino->y_velocity = 0.0;
+		dino->touching_ground = true;
+		jump_dino(dino);
+	}
+
+	dino->y = (int)(dino->phys_y);			/* Align visual position with physical position */
+
+	for (i = 0; i < 2; i++) {				/* Check obstacle collision */
+		obstacle = &(model->obstacles[i]);
+
+		if (dino->x < obstacle->x + obstacle->width &&		/* Check bounding box overlap */
+			dino->x + dino->width > obstacle->x &&
+			dino->y < obstacle->y + obstacle->height &&
+			dino->y + dino->height > obstacle->y) {
+			dino->colliding = true;							/* Enable collision flag */
+		}
+	}
+
+}
+
+void jump_dino(struct Dino *dino) {
+	if (dino->touching_ground == true) {		/* Check if touchiung ground before jumping */
+		dino->touching_ground = false;			/* Set touching ground flag to false */
+		dino->y_velocity = DINO_JUMP_VELOCITY;	/* Set the velocity to go upwards */
+	}
+}
+
+void update_ptero(struct Ptero *ptero) {
+	ptero->prev_x2 = ptero->prev_x1;
+	ptero->prev_x1 = ptero->x;
+	ptero->x -= SCROLL_SPEED;
+}
+
+void update_cactus(struct Cactus *cactus) {
+	cactus->prev_x2 = cactus->prev_x1;
+	cactus->prev_x1 = cactus->x;
+	cactus->x -= SCROLL_SPEED;
+}
+
+void update_ground(struct Ground *ground) {
+	ground->scroll_offset -= SCROLL_SPEED;
+	if (ground->scroll_offset < 0)
+		ground->scroll_offset += GROUND_IMG_WIDTH;
+}
+
+void update_counter(struct Counter *counter) {
+	counter->score++;
+}
+
+void init_model(struct Model *model) {
+	model->dino.x = 50;
+	model->dino.y = 300;
+	model->dino.prev_x1 = 50;
+	model->dino.prev_y1 = 300;
+	model->dino.prev_x2 = 50;
+	model->dino.prev_y2 = 300;
+	model->dino.width = 128;
+	model->dino.height = 128;
+	model->dino.phys_y = 300.0;
+	model->dino.y_velocity = 0.0;
+	model->dino.colliding = false;
+	model->dino.touching_ground = false;
+	model->dino.animation_frame = 0;
+
+	model->ground.y = 290;
+	model->ground.scroll_offset = 0;
+}
+
+/* Old behavior functions */
+/*void set_dino_pos(struct Dino *dino, unsigned int x, unsigned int y){                                                              
     dino->x = x;                                    
     dino->y = y;  
 }
@@ -61,5 +147,5 @@ void set_background_pos(struct Background *background, unsigned int x, unsigned 
 void move_background(struct Background *background){
     background->delta_x = 1;
     background->x -= background->delta_x;
-}
+}*/
 

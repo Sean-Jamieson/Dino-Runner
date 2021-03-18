@@ -1,7 +1,25 @@
-prog: model.o tst_mod.o
-	cc68x -g model.o tst_mod.o -o tst_mod
-MODEL.o: model.c model.h
-	cc68x -g -c model.c
+CC=cc68x
 
-tst_mod.o: tst_mod.c model.h
-	cc68x -g -c tst_mod.c
+a.out: main.o raster.o render.o fbuff.o model.o dino_img.o ground~1.o
+	$(CC) main.o raster.o render.o fbuff.o model.o dino_img.o ground~1.o
+
+main.o: main.c model.h render.h raster.h fbuff.h boolean.h
+	$(CC) -c main.c
+
+raster.o: raster.c raster.h boolean.h
+	$(CC) -c raster.c
+
+render.o: render.c render.h raster.h model.h images.h
+	$(CC) -c render.c
+
+fbuff.o: fbuff.c fbuff.h raster.h boolean.h
+	$(CC) -c fbuff.c
+
+model.o: model.c model.h boolean.h images.h
+	$(CC) -c model.c
+
+dino_img.o: dino_img.c images.h
+	$(CC) -c dino_img.c
+
+ground~1.o: ground~1.c images.h
+	$(CC) -c ground~1.c

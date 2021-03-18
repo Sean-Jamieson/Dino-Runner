@@ -4,16 +4,25 @@
 #include "IMAGES.H"
 
 void render_game(unsigned long *base, struct Model *model) {
+	clear_dino(base, model);
+	clear_ground(base, model);
+
 	render_dino(base, model);
 	render_ground(base, model);
 }
 
 void render_dino(unsigned long *base, struct Model *model) {
-	clear_area(base, model->dino->x, model->dino->y, DINO_IMG_WIDTH, DINO_IMG_HEIGHT);
-	draw_bmp(base, dino_img, model->dino->x, model->dino->y, DINO_IMG_WIDTH, DINO_IMG_HEIGHT);
+	draw_bmp(base, dino_img, model->dino.x, model->dino.y - DINO_IMG_HEIGHT, DINO_IMG_WIDTH, DINO_IMG_HEIGHT);
+}
+
+void clear_dino(unsigned long *base, struct Model *model) {
+	clear_area(base, model->dino.prev_x2, model->dino.prev_y2 - DINO_IMG_HEIGHT, DINO_IMG_WIDTH, DINO_IMG_HEIGHT);
 }
 
 void render_ground(unsigned long *base, struct Model *model) {
-	clear_area(base, 0, model->ground->y, GROUND_IMG_WIDTH, GROUND_IMG_HEIGHT);
-	draw_ground(base, ground_img, model->ground->y, GROUND_IMG_WIDTH, GROUND_IMG_HEIGHT, model->ground->scroll_offset);
+	draw_ground(base, ground_img, model->ground.y, GROUND_IMG_WIDTH, GROUND_IMG_HEIGHT, model->ground.scroll_offset);
+}
+
+void clear_ground(unsigned long *base, struct Model *model) {
+	clear_area(base, 0, model->ground.y, GROUND_IMG_WIDTH, GROUND_IMG_HEIGHT);
 }

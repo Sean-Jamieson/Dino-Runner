@@ -25,7 +25,7 @@ void clear_area(unsigned long *base, unsigned int x, unsigned int y, unsigned in
 	unsigned int img_y;
 
 	unsigned long start_mask = 0xFFFFFFFFu << end_bit;
-	unsigned long end_mask = 0xFFFFFFFFu >> start_bit +width % 32;		/* width % 32 (byte alignment???) untested */
+	unsigned long end_mask = 0xFFFFFFFFu >> start_bit + width % 32;		/* width % 32 (byte alignment???) untested */
 
 	for (img_y = 0; img_y < height; img_y++) {
 		
@@ -42,7 +42,6 @@ void clear_area(unsigned long *base, unsigned int x, unsigned int y, unsigned in
 			*loc &= end_mask;
 		else
 			*loc = 0;
-		loc++;
 
 		loc += LONGS_PER_ROW - long_width;								/* move to next line */
 	}
