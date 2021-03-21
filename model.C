@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <osbind.h>
 #include "MODEL.H"
 #include "IMAGES.H"
 
