@@ -38,10 +38,19 @@ void update_dino(struct Dino *dino, struct Model *model) {
 
 }
 
-void jump_dino(struct Dino *dino) {
-	if (dino->touching_ground == true) {		/* Check if touchiung ground before jumping */
-		dino->touching_ground = false;			/* Set touching ground flag to false */
-		dino->y_velocity = DINO_JUMP_VELOCITY;	/* Set the velocity to go upwards */
+void jump_dino(struct Dino *dino)
+{
+	if (dino->touching_ground == true)
+	{				  												/* Check if touchiung ground before jumping */
+		if (Cconis()) 												/* is there user input read to be read? */
+		{
+			char ch = (char)Cnecin();
+			if (ch == 'w')
+			{
+				dino->touching_ground = false;		   				/* Set touching ground flag to false */
+				dino->y_velocity = DINO_JUMP_VELOCITY; 				/* Set the velocity to go upwards */
+			}
+		}
 	}
 }
 
