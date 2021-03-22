@@ -2,7 +2,7 @@
 #define LONGS_PER_SCREEN	8000
 #define BYTES_PER_ROW		80
 #define LONGS_PER_ROW		20
-#define NUM_OF_COLUMNS		200
+#define NUM_OF_COLUMNS		640
 #define NUM_OF_ROWS			400
 
 void fill_screen(unsigned long *base, unsigned long pattern);

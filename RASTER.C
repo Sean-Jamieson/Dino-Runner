@@ -55,7 +55,7 @@ void draw_bmp(unsigned long *base, unsigned long *img, signed int x, signed int 
 	unsigned int cropped_right = 0;
 
 	signed int long_x = x / 32;
-	unsigned int long_width = width / 32;
+	signed int long_width = width / 32;
 
 	unsigned int start_bit;
 	unsigned int end_bit;

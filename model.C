@@ -2,6 +2,9 @@
 #include <osbind.h>
 #include "MODEL.H"
 #include "IMAGES.H"
+#include "RASTER.H"
+
+int obstacle_index = 0;
 
 /* New behavior functions */
 void update_dino(struct Dino *dino, struct Model *model) {
@@ -21,8 +24,9 @@ void update_dino(struct Dino *dino, struct Model *model) {
 		dino->phys_y = DINO_GROUND_HEIGHT;
 		dino->y_velocity = 0.0;
 		dino->touching_ground = true;
-		jump_dino(dino);
 	}
+
+	jump_dino(dino);
 
 	dino->y = (int)(dino->phys_y);			/* Align visual position with physical position */
 
@@ -37,22 +41,44 @@ void update_dino(struct Dino *dino, struct Model *model) {
 		}
 	}
 
+	if (dino->animation_tick++ >= 5) {
+		dino->animation_tick = 0;
+		dino->animation_frame++;
+		if (dino->animation_frame >= 4)
+			dino->animation_frame = 0;
+	}
+
 }
 
-void jump_dino(struct Dino *dino)
-{
-	if (dino->touching_ground == true)
-	{				  												/* Check if touchiung ground before jumping */
-		if (Cconis()) 												/* is there user input read to be read? */
-		{
+/* Make a module that checks for input like we did in class, and have that module call this function instead
+   of checking for input in this function */
+
+void jump_dino(struct Dino *dino) {
+	if (dino->touching_ground == true) {							/* Check if touchiung ground before jumping */
+		if (Cconis()) {												/* is there user input read to be read? */
 			char ch = (char)Cnecin();
-			if (ch == 'w')
-			{
+			if (ch == 'w') {
 				dino->touching_ground = false;		   				/* Set touching ground flag to false */
 				dino->y_velocity = DINO_JUMP_VELOCITY; 				/* Set the velocity to go upwards */
 			}
 		}
 	}
+}
+
+void update_obstacle(struct Obstacle *obstacle, struct Model *model) {
+	obstacle->prev_x2 = obstacle->prev_x1;
+	obstacle->prev_x1 = obstacle->x;
+	obstacle->x -= SCROLL_SPEED;
+	
+	if (obstacle->animation_frame != 2 && obstacle->animation_tick++ > 5) {
+		obstacle->animation_tick = 0;
+		obstacle->animation_frame++;
+		if (obstacle->animation_frame >= 2)
+			obstacle->animation_frame = 0;
+	}
+
+	if (obstacle->x < -(signed int)(obstacle->width))
+		generate_obstacle(model);
 }
 
 void update_ptero(struct Ptero *ptero) {
@@ -77,23 +103,54 @@ void update_counter(struct Counter *counter) {
 	counter->score++;
 }
 
+void generate_obstacle(struct Model *model) {
+	model->obstacles[obstacle_index].x = NUM_OF_COLUMNS;
+	model->obstacles[obstacle_index].y = 300;
+	model->obstacles[obstacle_index].prev_x1 = NUM_OF_COLUMNS;
+	model->obstacles[obstacle_index].prev_y1 = 300;
+	model->obstacles[obstacle_index].prev_x2 = NUM_OF_COLUMNS;
+	model->obstacles[obstacle_index].prev_y2 = 300;
+	model->obstacles[obstacle_index].width = CACTUS_IMG_WIDTH;
+	model->obstacles[obstacle_index].height = CACTUS_IMG_HEIGHT;
+	model->obstacles[obstacle_index].animation_frame = 2;
+	model->obstacles[obstacle_index].animation_tick = 0;
+
+	obstacle_index = obstacle_index == 0 ? 1 : 0;
+}
+
 void init_model(struct Model *model) {
+	int i;
+
 	model->dino.x = 50;
 	model->dino.y = 300;
 	model->dino.prev_x1 = 50;
 	model->dino.prev_y1 = 300;
 	model->dino.prev_x2 = 50;
 	model->dino.prev_y2 = 300;
-	model->dino.width = 128;
-	model->dino.height = 128;
+	model->dino.width = DINO_IMG_WIDTH;
+	model->dino.height = DINO_IMG_HEIGHT;
 	model->dino.phys_y = 300.0;
 	model->dino.y_velocity = 0.0;
 	model->dino.colliding = false;
 	model->dino.touching_ground = false;
 	model->dino.animation_frame = 0;
+	model->dino.animation_tick = 0;
 
 	model->ground.y = 290;
 	model->ground.scroll_offset = 0;
+
+	for (i = 0; i < 2; i++) {
+		model->obstacles[i].x = -100;
+		model->obstacles[i].y = 300;
+		model->obstacles[i].prev_x1 = -100;
+		model->obstacles[i].prev_y1 = 300;
+		model->obstacles[i].prev_x2 = -100;
+		model->obstacles[i].prev_y2 = 300;
+		model->obstacles[i].width = 0;
+		model->obstacles[i].height = 0;
+		model->obstacles[i].animation_frame = 0;
+		model->obstacles[i].animation_tick = 0;
+	}
 }
 
 /* Old behavior functions */

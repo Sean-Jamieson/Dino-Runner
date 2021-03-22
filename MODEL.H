@@ -3,7 +3,7 @@
 #define SCROLL_SPEED 5
 
 #define DINO_ACCELERATION 5.0
-#define DINO_JUMP_VELOCITY -20.0
+#define DINO_JUMP_VELOCITY -50.0
 #define DINO_HEIGHT 128.0
 #define DINO_GROUND_HEIGHT 300
 struct Dino {
@@ -15,27 +15,30 @@ struct Dino {
 	float y_velocity;
 	bool colliding;
 	bool touching_ground;
+	unsigned int animation_tick;
 	unsigned int animation_frame;
 };
 
 struct Obstacle {
 	signed int x, y;
+	signed int prev_x1, prev_y1;
+	signed int prev_x2, prev_y2;
 	unsigned int width, height;
+	unsigned int animation_frame;
+	unsigned int animation_tick;
 };
 
 struct Ptero {
 	signed int x, y;
 	signed int prev_x1, prev_y1;
 	signed int prev_x2, prev_y2;
-	unsigned int animationFrame;
-	struct Obstacle obstacle;
+	unsigned int animation_frame;
 };
 
 struct Cactus {
 	signed int x, y;
 	signed int prev_x1, prev_y1;
 	signed int prev_x2, prev_y2;
-	struct Obstacle obstacle;
 };
 
 struct Ground {
@@ -55,8 +58,6 @@ struct Counter {
 struct Model {
 	struct Dino dino;
 	struct Obstacle obstacles[2];
-	struct Cactus cacti[2];
-	struct Ptero pteros[2];
 	struct Ground ground;
 	struct Background background;
 	struct Counter counter;
@@ -66,6 +67,8 @@ struct Model {
 void update_dino(struct Dino *dino, struct Model *model);
 void jump_dino(struct Dino *dino);
 
+void update_obstacle(struct Obstacle *obstacle, struct Model *model);
+
 void update_ptero(struct Ptero *ptero);
 
 void update_cactus(struct Cactus *cactus);
@@ -73,6 +76,8 @@ void update_cactus(struct Cactus *cactus);
 void update_ground(struct Ground *ground);
 
 void update_counter(struct Counter *counter);
+
+void generate_obstacle(struct Model *model);
 
 void init_model(struct Model *model);
 

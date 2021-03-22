@@ -1,7 +1,7 @@
 CC=cc68x
 
-a.out: main.o raster.o render.o fbuff.o model.o dino_img.o ground~1.o
-	$(CC) main.o raster.o render.o fbuff.o model.o dino_img.o ground~1.o
+a.out: main.o raster.o render.o fbuff.o model.o dino_img.o ground~1.o cactus~1.o ptero_~1.o
+	$(CC) main.o raster.o render.o fbuff.o model.o dino_img.o ground~1.o cactus~1.o ptero_~1.o
 
 main.o: main.c model.h render.h raster.h fbuff.h boolean.h
 	$(CC) -c main.c
@@ -23,3 +23,9 @@ dino_img.o: dino_img.c images.h
 
 ground~1.o: ground~1.c images.h
 	$(CC) -c ground~1.c
+
+cactus~1.o: cactus~1.c images.h
+	$(CC) -c cactus~1.c
+
+ptero_~1.o: ptero_~1.c images.h
+	$(CC) -c ptero~1.c
