@@ -14,18 +14,18 @@ void fill_screen(unsigned long *base, unsigned long pattern) {
 
 void clear_area(unsigned long *base, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
 
-	unsigned int long_x = x / 32;
-	unsigned int long_width = width / 32;
+	unsigned int long_x = x / LONG_WORD;
+	unsigned int long_width = width / LONG_WORD;
 
 	unsigned long *loc = base + y * LONGS_PER_ROW + long_x;
-	unsigned char start_bit = x % 32;
-	unsigned char end_bit = 32 - start_bit;
+	unsigned char start_bit = x % LONG_WORD;
+	unsigned char end_bit = LONG_WORD - start_bit;
 
 	unsigned int img_x;
 	unsigned int img_y;
 
 	unsigned long start_mask = 0xFFFFFFFFu << end_bit;
-	unsigned long end_mask = 0xFFFFFFFFu >> start_bit + width % 32;		/* width % 32 (byte alignment???) untested */
+	unsigned long end_mask = 0xFFFFFFFFu >> start_bit + width % LONG_WORD;		/* width % 32 (byte alignment???) untested */
 
 	for (img_y = 0; img_y < height; img_y++) {
 		
@@ -54,8 +54,8 @@ void draw_bmp(unsigned long *base, unsigned long *img, signed int x, signed int 
 	unsigned int cropped_left = 0;
 	unsigned int cropped_right = 0;
 
-	signed int long_x = x / 32;
-	signed int long_width = width / 32;
+	signed int long_x = x / LONG_WORD;
+	signed int long_width = width / LONG_WORD;
 
 	unsigned int start_bit;
 	unsigned int end_bit;
@@ -97,8 +97,8 @@ void draw_bmp(unsigned long *base, unsigned long *img, signed int x, signed int 
 	if (long_x + long_width > LONGS_PER_ROW)
 		cropped_right = long_x + long_width - LONGS_PER_ROW;
 
-	start_bit = x % 32;
-	end_bit = 32 - start_bit;
+	start_bit = x % LONG_WORD;
+	end_bit = LONG_WORD - start_bit;
 
 	loc = base + y * LONGS_PER_ROW + long_x;
 
@@ -125,11 +125,11 @@ void draw_bmp(unsigned long *base, unsigned long *img, signed int x, signed int 
 
 void draw_ground(unsigned long *base, unsigned long *img, unsigned int y, unsigned int width, unsigned int height, unsigned int offset) {
 
-	unsigned int long_width = width / 32;
-	unsigned int long_offset = offset / 32;
+	unsigned int long_width = width / LONG_WORD;
+	unsigned int long_offset = offset / LONG_WORD;
 
-	unsigned int start_bit = offset % 32;
-	unsigned int end_bit = 32 - start_bit;
+	unsigned int start_bit = offset % LONG_WORD;
+	unsigned int end_bit = LONG_WORD - start_bit;
 
 	unsigned long *loc = base + y * LONGS_PER_ROW;
 	unsigned long *img_loc = img + long_width - long_offset;

@@ -27,6 +27,13 @@ int main() {
 		update_dino(&model.dino, &model);
 		update_ground(&model.ground);
 		update_obstacle(&model.obstacles[0], &model);
+		if (Cconis()) {												
+			char ch = (char)Cnecin();
+			if (ch == 'q') { 
+				fb_exit();
+				return 0 ;
+			}
+		}
 		/*update_obstacle(&model.obstacles[1], &model);*/
 	}
 

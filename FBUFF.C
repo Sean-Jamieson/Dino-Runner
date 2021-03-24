@@ -14,7 +14,7 @@ bool useBuff1 = true;
 
 void fb_init() {
 
-	buff1 = Physbase();
+	buff1 = Physbase();2
 
 	buff1 = (unsigned long*)(((long)(&buff1Arr) | 0xff) + 1);
 	buff2 = (unsigned long*)(((long)(&buff2Arr) | 0xff) + 1);

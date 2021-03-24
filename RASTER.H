@@ -4,6 +4,8 @@
 #define LONGS_PER_ROW		20
 #define NUM_OF_COLUMNS		640
 #define NUM_OF_ROWS			400
+#define LONG_WORD           32
+
 
 void fill_screen(unsigned long *base, unsigned long pattern);
 void clear_area(unsigned long *base, unsigned int x, unsigned int y, unsigned int width, unsigned int height);

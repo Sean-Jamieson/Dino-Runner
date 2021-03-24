@@ -2,10 +2,13 @@
 
 #define SCROLL_SPEED 15
 
-#define DINO_ACCELERATION 5.0
-#define DINO_JUMP_VELOCITY -40.0
-#define DINO_HEIGHT 128.0
-#define DINO_GROUND_HEIGHT 300
+#define DINO_ACCELERATION 	5.0
+#define DINO_JUMP_VELOCITY 	-40.0
+#define DINO_HEIGHT 		128.0
+#define DINO_GROUND_HEIGHT 	300
+#define GROUND_HEIGHT       300
+#define CACTUS_SELECT       2
+#define OBSTACLE_START_POS 	-100
 struct Dino {
 	signed int x, y;
 	signed int prev_x1, prev_y1;

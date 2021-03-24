@@ -70,7 +70,7 @@ void update_obstacle(struct Obstacle *obstacle, struct Model *model) {
 	obstacle->prev_x1 = obstacle->x;
 	obstacle->x -= SCROLL_SPEED;
 	
-	if (obstacle->animation_frame != 2 && obstacle->animation_tick++ > 5) {
+	if (obstacle->animation_frame != 2 && obstacle->animation_tick++ > 5) {				/* what does this do?*/
 		obstacle->animation_tick = 0;
 		obstacle->animation_frame++;
 		if (obstacle->animation_frame >= 2)
@@ -105,14 +105,14 @@ void update_counter(struct Counter *counter) {
 
 void generate_obstacle(struct Model *model) {
 	model->obstacles[obstacle_index].x = NUM_OF_COLUMNS;
-	model->obstacles[obstacle_index].y = 300;
+	model->obstacles[obstacle_index].y = GROUND_HEIGHT;
 	model->obstacles[obstacle_index].prev_x1 = NUM_OF_COLUMNS;
-	model->obstacles[obstacle_index].prev_y1 = 300;
+	model->obstacles[obstacle_index].prev_y1 = GROUND_HEIGHT;
 	model->obstacles[obstacle_index].prev_x2 = NUM_OF_COLUMNS;
-	model->obstacles[obstacle_index].prev_y2 = 300;
+	model->obstacles[obstacle_index].prev_y2 = GROUND_HEIGHT;
 	model->obstacles[obstacle_index].width = CACTUS_IMG_WIDTH;
 	model->obstacles[obstacle_index].height = CACTUS_IMG_HEIGHT;
-	model->obstacles[obstacle_index].animation_frame = 2;
+	model->obstacles[obstacle_index].animation_frame = CACTUS_SELECT;
 	model->obstacles[obstacle_index].animation_tick = 0;
 
 	obstacle_index = obstacle_index == 0 ? 1 : 0;
@@ -121,19 +121,19 @@ void generate_obstacle(struct Model *model) {
 void init_model(struct Model *model) {
 	int i;
 
-	model->dino.x = 50;
-	model->dino.y = 300;
+	model->dino.x = 50;  					/* why is this number significant?*/
+	model->dino.y = GROUND_HEIGHT;
 	model->dino.prev_x1 = 50;
-	model->dino.prev_y1 = 300;
+	model->dino.prev_y1 = GROUND_HEIGHT;
 	model->dino.prev_x2 = 50;
-	model->dino.prev_y2 = 300;
+	model->dino.prev_y2 = GROUND_HEIGHT;
 	model->dino.width = DINO_IMG_WIDTH;
 	model->dino.height = DINO_IMG_HEIGHT;
-	model->dino.phys_y = 300.0;
+	model->dino.phys_y = 300.0;				/* DINO_PHYS_POS?*/
 	model->dino.y_velocity = 0.0;
 	model->dino.colliding = false;
 	model->dino.touching_ground = false;
-	model->dino.animation_frame = 0;
+	model->dino.animation_frame = 0;		/* INITIALIZE?*/
 	model->dino.animation_tick = 0;
 
 	model->ground.y = 290;
@@ -141,11 +141,11 @@ void init_model(struct Model *model) {
 
 	for (i = 0; i < 2; i++) {
 		model->obstacles[i].x = -100;
-		model->obstacles[i].y = 300;
+		model->obstacles[i].y = GROUND_HEIGHT;
 		model->obstacles[i].prev_x1 = -100;
-		model->obstacles[i].prev_y1 = 300;
+		model->obstacles[i].prev_y1 = GROUND_HEIGHT;
 		model->obstacles[i].prev_x2 = -100;
-		model->obstacles[i].prev_y2 = 300;
+		model->obstacles[i].prev_y2 = GROUND_HEIGHT;
 		model->obstacles[i].width = 0;
 		model->obstacles[i].height = 0;
 		model->obstacles[i].animation_frame = 0;

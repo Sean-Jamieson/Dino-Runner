@@ -37,7 +37,7 @@ void render_obstacles(unsigned long *base, struct Model *model) {
 	unsigned int frame = model->obstacles[i].animation_frame;
 	for (i = 0; i < 1; i++) {
 		if (frame = 2) {			/* if the obstacle is a cactus */
-			printf("%d\n", model->obstacles[i].x);
+			/*printf("%d\n", model->obstacles[i].x);*/
 			draw_bmp(base, cactus_image, model->obstacles[i].x, model->obstacles[i].y - CACTUS_IMG_HEIGHT, CACTUS_IMG_WIDTH, CACTUS_IMG_HEIGHT);
 		} else {					/* if the obstacle is a pterodactyl */
 			draw_bmp(base, ptero_images[frame], model->obstacles[i].x, model->obstacles[i].y - PTERO_IMG_HEIGHT, PTERO_IMG_WIDTH, PTERO_IMG_HEIGHT);
