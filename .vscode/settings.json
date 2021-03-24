@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "model.C": "cpp",
+        "CACTUS_IMG.C": "cpp",
+        "FBUFF.C": "cpp",
+        "IO.C": "cpp",
+        "MAIN.C": "cpp",
+        "RASTER.C": "cpp",
+        "RENDER.C": "cpp"
+    }
+}

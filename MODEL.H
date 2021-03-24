@@ -1,9 +1,9 @@
 #include "BOOLEAN.H"
 
-#define SCROLL_SPEED 5
+#define SCROLL_SPEED 15
 
 #define DINO_ACCELERATION 5.0
-#define DINO_JUMP_VELOCITY -50.0
+#define DINO_JUMP_VELOCITY -40.0
 #define DINO_HEIGHT 128.0
 #define DINO_GROUND_HEIGHT 300
 struct Dino {
