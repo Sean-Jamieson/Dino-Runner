@@ -35,8 +35,8 @@ void update_dino(struct Dino *dino, struct Model *model) {
 
 		if (dino->x < obstacle->x + obstacle->width &&		/* Check bounding box overlap */
 			dino->x + dino->width > obstacle->x &&
-			dino->y < obstacle->y + obstacle->height &&
-			dino->y + dino->height > obstacle->y) {
+			dino->y - dino->height < obstacle->y &&
+			dino->y > obstacle->y - obstacle->height) {
 			dino->colliding = true;							/* Enable collision flag */
 		}
 	}
