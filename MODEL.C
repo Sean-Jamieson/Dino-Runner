@@ -41,7 +41,7 @@ void update_dino(struct Dino *dino, struct Model *model) {
 		}
 	}
 
-	if (dino->animation_tick++ >= ANIMATION_TICKS) {
+	if (dino->animation_tick++ >= ANIMATION_TICKS && dino->touching_ground) {
 		dino->animation_tick = 0;
 		dino->animation_frame++;
 		if (dino->animation_frame >= 4)
@@ -60,6 +60,7 @@ void jump_dino(struct Dino *dino) {
 			if (ch == 'w') {
 				dino->touching_ground = false;		   				/* Set touching ground flag to false */
 				dino->y_velocity = DINO_JUMP_VELOCITY; 				/* Set the velocity to go upwards */
+
 			}
 		}
 	}

@@ -4,7 +4,7 @@ extern unsigned long ground_img[400];
 
 #define DINO_IMG_WIDTH 96
 #define DINO_IMG_HEIGHT 96
-extern unsigned long dino_images[4][288];
+extern unsigned long dino_images[5][288];
 
 #define CACTUS_IMG_WIDTH 32
 #define CACTUS_IMG_HEIGHT 64

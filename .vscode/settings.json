@@ -6,6 +6,8 @@
         "IO.C": "cpp",
         "MAIN.C": "cpp",
         "RASTER.C": "cpp",
-        "RENDER.C": "cpp"
+        "RENDER.C": "cpp",
+        "PTERO_IMG.C": "cpp",
+        "DINO_IMG.C": "cpp"
     }
 }
