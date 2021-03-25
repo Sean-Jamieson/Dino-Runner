@@ -50,8 +50,8 @@ void clear_obstacles(unsigned long *base, struct Model *model) {
 	unsigned int frame = model->obstacles[i].animation_frame;
 	for (i = 0; i < 2; i++) {
 		if (frame == 2)
-			clear_area(base, model->obstacles[i].x, model->obstacles[i].y - CACTUS_IMG_HEIGHT, CACTUS_IMG_WIDTH, CACTUS_IMG_HEIGHT);
+			clear_area(base, model->obstacles[i].prev_x2, model->obstacles[i].prev_y2 - CACTUS_IMG_HEIGHT, CACTUS_IMG_WIDTH, CACTUS_IMG_HEIGHT);
 		else
-			clear_area(base, model->obstacles[i].x, model->obstacles[i].y - PTERO_IMG_HEIGHT, PTERO_IMG_WIDTH, PTERO_IMG_HEIGHT);
+			clear_area(base, model->obstacles[i].prev_x2, model->obstacles[i].prev_y2 - PTERO_IMG_HEIGHT, PTERO_IMG_WIDTH, PTERO_IMG_HEIGHT);
 	}
 }

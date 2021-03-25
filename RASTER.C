@@ -71,16 +71,16 @@ void draw_bmp(unsigned long *base, unsigned long *img, signed int x, signed int 
 	if (y + height < 0)
 		return;
 
-	if (long_x > LONGS_PER_ROW)
+	if (long_x >= LONGS_PER_ROW)
 		return;
 
-	if (long_x + long_width < 0)
+	if (long_x + long_width <= 0)
 		return;
 
 	if (y < 0) {
 		cropped_up = -y;
 		y = 0;
-		img += cropped_up * LONGS_PER_ROW;
+		img += cropped_up * long_width;
 	}
 
 	if (y + height > NUM_OF_ROWS) {
@@ -89,13 +89,15 @@ void draw_bmp(unsigned long *base, unsigned long *img, signed int x, signed int 
 
 	if (x < 0) {
 		cropped_left = -long_x;
-		long_x = 0;
+		long_x = LONGS_PER_ROW;
 		long_width -= cropped_left;
-		x = -x;
+		x = LONG_WORD + x;
 	}
 
-	if (long_x + long_width > LONGS_PER_ROW)
+	if (start_bit == 0 && long_x + long_width > LONGS_PER_ROW)
 		cropped_right = long_x + long_width - LONGS_PER_ROW;
+	else if (start_bit > 0 && long_x + long_width + 1 > LONGS_PER_ROW)
+		cropped_right = long_x + long_width + 1 - LONGS_PER_ROW;
 
 	start_bit = x % LONG_WORD;
 	end_bit = LONG_WORD - start_bit;
@@ -104,8 +106,9 @@ void draw_bmp(unsigned long *base, unsigned long *img, signed int x, signed int 
 
 	for (img_y = cropped_up; img_y < height - cropped_down; img_y++) {	/* y loop */
 		img += cropped_left;
-		if (start_bit > 0 && cropped_left > 0)
+		if (start_bit > 0 && cropped_left > 0) {
 			*loc |= *(img - 1) << end_bit;
+		}
 		img_x = 0;
 		if (cropped_right > 0)
 			img_x = cropped_right + 1;
@@ -116,7 +119,7 @@ void draw_bmp(unsigned long *base, unsigned long *img, signed int x, signed int 
 			img++;
 		}
 		if (cropped_right > 0)
-			*(loc++) |= *(img++) >> start_bit;
+			*loc |= *img >> start_bit;
 
 		loc += LONGS_PER_ROW - long_width + cropped_right;				/* move to next line */
 		img += cropped_right;

@@ -4,6 +4,7 @@
 #include "RENDER.H"
 #include "RASTER.H"
 #include "FBUFF.H"
+#include "IMAGES.H"
 
 struct Model model;
 
@@ -36,6 +37,9 @@ int main() {
 		}
 		/*update_obstacle(&model.obstacles[1], &model);*/
 	}
+
+	/*draw_bmp(Physbase(), cactus_image, -CACTUS_IMG_WIDTH, 300 - CACTUS_IMG_HEIGHT, CACTUS_IMG_WIDTH, CACTUS_IMG_HEIGHT);
+	Cconin();*/
 
 	fb_exit();
 

@@ -41,7 +41,7 @@ void update_dino(struct Dino *dino, struct Model *model) {
 		}
 	}
 
-	if (dino->animation_tick++ >= 5) {
+	if (dino->animation_tick++ >= ANIMATION_TICKS) {
 		dino->animation_tick = 0;
 		dino->animation_frame++;
 		if (dino->animation_frame >= 4)
@@ -70,14 +70,14 @@ void update_obstacle(struct Obstacle *obstacle, struct Model *model) {
 	obstacle->prev_x1 = obstacle->x;
 	obstacle->x -= SCROLL_SPEED;
 	
-	if (obstacle->animation_frame != 2 && obstacle->animation_tick++ > 5) {				/* what does this do?*/
+	if (obstacle->animation_frame != 2 && obstacle->animation_tick++ > ANIMATION_TICKS) {				/* what does this do?*/ /* if the obstacle is a ptero and there have been enough animation ticks change the animation frame */
 		obstacle->animation_tick = 0;
 		obstacle->animation_frame++;
 		if (obstacle->animation_frame >= 2)
 			obstacle->animation_frame = 0;
 	}
 
-	if (obstacle->x < -(signed int)(obstacle->width))
+	if (obstacle->x < -((signed int)(obstacle->width)))
 		generate_obstacle(model);
 }
 
@@ -121,7 +121,7 @@ void generate_obstacle(struct Model *model) {
 void init_model(struct Model *model) {
 	int i;
 
-	model->dino.x = 50;  					/* why is this number significant?*/
+	model->dino.x = 50;  					/* why is this number significant?*/ /* This is the x position of the dino, now that I think of it the prev_x properties are useless since it only moves up */
 	model->dino.y = GROUND_HEIGHT;
 	model->dino.prev_x1 = 50;
 	model->dino.prev_y1 = GROUND_HEIGHT;
@@ -129,18 +129,18 @@ void init_model(struct Model *model) {
 	model->dino.prev_y2 = GROUND_HEIGHT;
 	model->dino.width = DINO_IMG_WIDTH;
 	model->dino.height = DINO_IMG_HEIGHT;
-	model->dino.phys_y = 300.0;				/* DINO_PHYS_POS?*/
+	model->dino.phys_y = 300.0;				/* DINO_PHYS_POS?*/ /* This is the physical height of the ground, the visual position of the ground is slightly higher because of the bumps and such in the image */
 	model->dino.y_velocity = 0.0;
 	model->dino.colliding = false;
 	model->dino.touching_ground = false;
-	model->dino.animation_frame = 0;		/* INITIALIZE?*/
+	model->dino.animation_frame = 0;		/* INITIALIZE? */
 	model->dino.animation_tick = 0;
 
 	model->ground.y = 290;
 	model->ground.scroll_offset = 0;
 
 	for (i = 0; i < 2; i++) {
-		model->obstacles[i].x = -100;
+		model->obstacles[i].x = -200;
 		model->obstacles[i].y = GROUND_HEIGHT;
 		model->obstacles[i].prev_x1 = -100;
 		model->obstacles[i].prev_y1 = GROUND_HEIGHT;

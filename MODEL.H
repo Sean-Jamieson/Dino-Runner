@@ -9,6 +9,8 @@
 #define GROUND_HEIGHT       300
 #define CACTUS_SELECT       2
 #define OBSTACLE_START_POS 	-100
+#define ANIMATION_TICKS		2
+
 struct Dino {
 	signed int x, y;
 	signed int prev_x1, prev_y1;
