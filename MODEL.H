@@ -10,6 +10,7 @@
 #define CACTUS_SELECT       2
 #define OBSTACLE_START_POS 	-100
 #define ANIMATION_TICKS		2
+#define COLLIDER_OFFSET		16
 
 struct Dino {
 	signed int x, y;
