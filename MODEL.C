@@ -60,7 +60,6 @@ void jump_dino(struct Dino *dino) {
 			if (ch == 'w') {
 				dino->touching_ground = false;		   				/* Set touching ground flag to false */
 				dino->y_velocity = DINO_JUMP_VELOCITY; 				/* Set the velocity to go upwards */
-
 			}
 		}
 	}

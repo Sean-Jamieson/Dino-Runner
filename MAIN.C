@@ -46,3 +46,7 @@ int main() {
 	return 0;
 }
 
+
+long timer (){
+	long *timer = (*long) 0x462
+}

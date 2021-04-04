@@ -8,6 +8,8 @@
         "RASTER.C": "cpp",
         "RENDER.C": "cpp",
         "PTERO_IMG.C": "cpp",
-        "DINO_IMG.C": "cpp"
+        "DINO_IMG.C": "cpp",
+        "SOUND.C": "cpp",
+        "PSG.C": "cpp"
     }
 }
