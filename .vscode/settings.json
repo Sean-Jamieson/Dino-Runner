@@ -10,6 +10,9 @@
         "PTERO_IMG.C": "cpp",
         "DINO_IMG.C": "cpp",
         "SOUND.C": "cpp",
-        "PSG.C": "cpp"
+        "PSG.C": "cpp",
+        "SONG.C": "cpp",
+        "TEST.C": "cpp",
+        "GET_TIME.C": "cpp"
     }
 }

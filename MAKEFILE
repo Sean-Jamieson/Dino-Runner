@@ -1,7 +1,15 @@
-CC=cc68x
+CC = cc68x
+CFLAGS = -g -c
+OBJS = main.o raster.o render.o fbuff.o model.o sound.o get_time.o song.o dino_img.o ground~1.o cactus~1.o ptero_~1.o
+PROG = dino
 
-a.out: main.o raster.o render.o fbuff.o model.o dino_img.o ground~1.o cactus~1.o ptero_~1.o
-	$(CC) main.o raster.o render.o fbuff.o model.o dino_img.o ground~1.o cactus~1.o ptero_~1.o
+all: $(PROG)
+
+clean:
+	$(RM) *.o *.~ $(PROG)
+
+$(PROG): $(OBJS)
+	$(CC) -g $(OBJS) -o $(PROG)
 
 main.o: main.c model.h render.h raster.h fbuff.h boolean.h
 	$(CC) -c main.c
@@ -17,6 +25,15 @@ fbuff.o: fbuff.c fbuff.h raster.h boolean.h
 
 model.o: model.c model.h boolean.h images.h
 	$(CC) -c model.c
+
+sound.o: sound.c sound.h song.h
+	$(CC) -c sound.c
+
+get_time.o: get_time.c get_time.h
+	$(CC) -c get_time.c
+
+song.o: song.c song.h
+	$(CC) -c song.c
 
 dino_img.o: dino_img.c images.h
 	$(CC) -c dino_img.c

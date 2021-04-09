@@ -20,10 +20,11 @@ void fb_init() {
 	o_buffer = Physbase();
 	o_rez = Getrez();
 	Setscreen(-1, buff1, 2);
+	
 }
 
 void fb_exit() {
-	Setscreen(-1, o_buffer, o_rez);
+	Setscreen(-1, o_buffer, -1);
 }
 
 void fb_flip() {
