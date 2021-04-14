@@ -151,7 +151,7 @@ int update_music(UINT32 time_elapsed)
     if(time_elapsed >= 22)
     {
         set_tone(0, song[++song_note]);
-        if(song_note >= 21)
+        if(song_note >= 3)
             song_note = 0;      
         return 1;
     }
@@ -160,9 +160,26 @@ int update_music(UINT32 time_elapsed)
 
 void set_noise(int tuning)
 {
-
+    write_psg(6, tuning);
 }
 
 void set_envelope(int shape, unsigned int sustain)
 {
+    unsigned int b_reg;
+    unsigned int c_reg;
+
+    write_psg(0xD, shape);
+    b_reg = sustain % 0x100;
+    c_reg = sustain / 0x100;
+    write_psg(0xB, b_reg);
+    write_psg(0xC, c_reg);
+
+}
+
+void dead_sound()
+{
+    set_noise(0);
+    enable_channel(1, 0, 1);
+    set_volume(1, 10);
+    set_envelope(8, 0x11);
 }

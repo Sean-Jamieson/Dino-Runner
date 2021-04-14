@@ -110,9 +110,9 @@ void generate_obstacle(struct Model *model) {
 	model->obstacles[obstacle_index].prev_y1 = GROUND_HEIGHT;
 	model->obstacles[obstacle_index].prev_x2 = NUM_OF_COLUMNS;
 	model->obstacles[obstacle_index].prev_y2 = GROUND_HEIGHT;
-	model->obstacles[obstacle_index].width = CACTUS_IMG_WIDTH;
-	model->obstacles[obstacle_index].height = CACTUS_IMG_HEIGHT;
-	model->obstacles[obstacle_index].animation_frame = CACTUS_SELECT;
+	model->obstacles[obstacle_index].width = PTERO_IMG_WIDTH;
+	model->obstacles[obstacle_index].height = PTERO_IMG_HEIGHT;
+	model->obstacles[obstacle_index].animation_frame = PTERO_SELECT;
 	model->obstacles[obstacle_index].animation_tick = 0;
 
 	obstacle_index = obstacle_index == 0 ? 1 : 0;

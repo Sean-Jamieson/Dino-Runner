@@ -13,6 +13,9 @@
         "PSG.C": "cpp",
         "SONG.C": "cpp",
         "TEST.C": "cpp",
-        "GET_TIME.C": "cpp"
+        "GET_TIME.C": "cpp",
+        "SPLASH.C": "cpp",
+        "START.C": "cpp",
+        "END.C": "cpp"
     }
 }

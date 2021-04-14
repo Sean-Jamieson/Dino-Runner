@@ -13,3 +13,8 @@ extern unsigned long cactus_image[64];
 #define PTERO_IMG_WIDTH 96
 #define PTERO_IMG_HEIGHT 64
 extern unsigned long ptero_images[2][192];
+
+#define SPLASH_WIDTH 640
+#define SPLASH_HEIGHT 400
+extern unsigned long start_screen [8000];
+extern unsigned long end_screen [8000];

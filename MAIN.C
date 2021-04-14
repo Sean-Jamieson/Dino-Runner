@@ -18,6 +18,7 @@ int main()
 	long prev_time;
 	long time_passed;
 
+
 	start_music();
 	prev_time = get_time();
 
@@ -31,6 +32,19 @@ int main()
 	fill_screen(fb_get_buff(), 0L);
 	generate_obstacle(&model);
 
+	clear_splash(Physbase());
+	render_start(Physbase());
+
+	while(!Cconis()){
+		time = get_time();
+		time_passed = time - prev_time;
+		if (time_passed >= 1)
+		{
+				if (update_music(time_passed) == 1)
+					prev_time = get_time();
+		}
+	}
+	clear_splash(Physbase());
 	while (model.dino.colliding == false)
 	{
 		render_game(fb_get_buff(), &model);
@@ -48,12 +62,23 @@ int main()
 				if (update_music(time_passed) == 1)
 					prev_time = get_time();
 		}
-		/*update_obstacle(&model.obstacles[1], &model);*/
 	}
-
-	/*draw_bmp(Physbase(), cactus_image, -CACTUS_IMG_WIDTH, 300 - CACTUS_IMG_HEIGHT, CACTUS_IMG_WIDTH, CACTUS_IMG_HEIGHT);
-	Cconin();*/
 	stop_sound();
+	dead_sound();
+	time_passed = 0;
+	while(time_passed < 25)
+	{
+	time = get_time();
+	time_passed = time - prev_time;
+	}
+		
+
+	stop_sound();
+	clear_splash(Physbase());
+	render_end(Physbase());
+	while(!Cconis())
+		;
+
 	fb_exit();
 	Vsync();
 

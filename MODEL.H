@@ -8,6 +8,7 @@
 #define DINO_GROUND_HEIGHT 	300
 #define GROUND_HEIGHT       300
 #define CACTUS_SELECT       2
+#define PTERO_SELECT		0
 #define OBSTACLE_START_POS 	-100
 #define ANIMATION_TICKS		2
 #define COLLIDER_OFFSET		16

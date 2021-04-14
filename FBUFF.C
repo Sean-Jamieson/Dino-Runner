@@ -8,7 +8,7 @@ unsigned long buff1Arr[LONGS_PER_SCREEN + 8];
 unsigned long buff2Arr[LONGS_PER_SCREEN + 8];
 unsigned long* buff1 = 0;
 unsigned long* buff2 = 0;
-unsigned long* o_buffer;	/* Original screen buffer */
+unsigned long* o_buffer = 0;	/* Original screen buffer */
 int o_rez;					/* Original resolution */
 bool useBuff1 = true;
 
@@ -18,7 +18,6 @@ void fb_init() {
 	buff2 = (unsigned long*)(((long)(&buff2Arr) | 0xff) + 1);
 
 	o_buffer = Physbase();
-	o_rez = Getrez();
 	Setscreen(-1, buff1, 2);
 	
 }

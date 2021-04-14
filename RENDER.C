@@ -32,6 +32,18 @@ void clear_ground(unsigned long *base, struct Model *model) {
 	clear_area(base, 0, model->ground.y, GROUND_IMG_WIDTH, GROUND_IMG_HEIGHT);
 }
 
+void render_start(unsigned long *base) {
+	draw_bmp(base, start_screen, 0, 0, SPLASH_WIDTH,SPLASH_HEIGHT);
+}
+
+void render_end(unsigned long *base) {
+	draw_bmp(base, end_screen, 0, 0, SPLASH_WIDTH, SPLASH_HEIGHT);
+}
+
+void clear_splash(unsigned long *base) {
+	clear_area(base, 0, 0, SPLASH_WIDTH, SPLASH_HEIGHT);
+}
+
 void render_obstacles(unsigned long *base, struct Model *model) {
 	int i;
 	unsigned int frame = model->obstacles[i].animation_frame;

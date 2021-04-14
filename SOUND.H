@@ -11,3 +11,4 @@ void start_music();
 int update_music(UINT32 time_elapsed);
 void set_noise(int tuning);
 void set_envelope(int shape, unsigned int sustain);
+void dead_sound();
